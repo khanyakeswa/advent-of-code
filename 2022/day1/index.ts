@@ -4,24 +4,29 @@ const rawCalorieList = await Bun.file('testsample.txt').text()
 
 const calorieCounter = () => {
   const calorieList = rawCalorieList.split('\n')
-  const processedCalorieList: number[][] = []
   let elfCals: number[] = []
+  const processedCalorieList: number[][] = [elfCals]
   for (let i = 0; i < calorieList.length; i++) {
-      if (calorieList[i]) {
-        elfCals.push(Number(calorieList[i]))
+    if (calorieList[i]) {
+      elfCals.push(Number(calorieList[i]))
     } else {
-        processedCalorieList.push(elfCals)
-        elfCals = []
+      elfCals = []
+      processedCalorieList.push(elfCals)
     }
   }
-  
+
   // [[1, 2, 3], [1], [1, 2]] => [1, 2, 3]
   const calorieSums = processedCalorieList.map((elfCals) => {
-      const calorieSum = elfCals.reduce((sum, currentCalorie) => sum + currentCalorie, 0)
-      
-      return calorieSum;
-    })
-    console.log(calorieSums.sort((a, b) => b - a)[0])
+    const calorieSum = elfCals.reduce(
+      (sum, currentCalorie) => sum + currentCalorie,
+      0
+    )
+    return calorieSum
+  })
+  const sortedCalorieSums = calorieSums.sort((a, b) => b - a)
+  console.log(
+    sortedCalorieSums[0] + sortedCalorieSums[1] + sortedCalorieSums[2]
+  )
 }
 
 calorieCounter()
